@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2026 The plugin-template Authors
+// SPDX-FileCopyrightText: 2026 The semrel Authors
 
 package plugin
 
@@ -10,19 +10,37 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewProviderDefaultsName(t *testing.T) {
-	t.Parallel()
-
-	provider := NewProvider("")
-
-	require.Equal(t, "replace-me", provider.Name())
-	require.NoError(t, provider.HealthCheck(context.Background()))
+type commandCall struct {
+	Name string
+	Args []string
+	Env  []string
+	Dir  string
 }
 
-func TestNewProviderUsesProvidedName(t *testing.T) {
+type fakeRunner struct {
+	Calls []commandCall
+}
+
+func (f *fakeRunner) Run(_ context.Context, name string, args []string, env []string, dir string) error {
+	copiedArgs := append([]string(nil), args...)
+	copiedEnv := append([]string(nil), env...)
+	f.Calls = append(f.Calls, commandCall{Name: name, Args: copiedArgs, Env: copiedEnv, Dir: dir})
+	return nil
+}
+
+func TestCargoUpdaterExecuteRunsExpectedCommands(t *testing.T) {
 	t.Parallel()
 
-	provider := NewProvider("provider-example")
+	runner := &fakeRunner{}
+	updater := NewCargoUpdater(".")
+	updater.Runner = runner
+	updater.Token = "secret-token"
 
-	require.Equal(t, "provider-example", provider.Name())
+	result, err := updater.Execute(context.Background(), &Release{Version: "1.2.3"})
+	require.NoError(t, err)
+	require.Len(t, runner.Calls, 2)
+	require.Equal(t, []string{"set-version", "1.2.3"}, runner.Calls[0].Args)
+	require.Equal(t, []string{"publish", "--no-verify"}, runner.Calls[1].Args)
+	require.Contains(t, runner.Calls[1].Env, "CARGO_REGISTRY_TOKEN=secret-token")
+	require.Equal(t, "1.2.3", result.Outputs["version"])
 }
