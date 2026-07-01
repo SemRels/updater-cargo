@@ -1,6 +1,6 @@
 # updater-cargo
 
-[![Latest Release](https://img.shields.io/github/v/release/SemRels/updater-cargo?label=version\&color=blue)](https://github.com/SemRels/updater-cargo/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/SemRels/updater-cargo?label=version&color=blue)](https://github.com/SemRels/updater-cargo/releases/latest)
 
 Updates the Rust crate version in `Cargo.toml`.
 
