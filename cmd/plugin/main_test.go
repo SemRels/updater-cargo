@@ -15,7 +15,7 @@ func TestRunUpdatesCargoToml(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.RemoveAll(dir)
+	defer func() { _ = os.RemoveAll(dir) }()
 
 	file := filepath.Join(dir, "Cargo.toml")
 	if err := os.WriteFile(file, []byte("[package]\nversion = \"1.0.0\"\n"), 0o644); err != nil {
