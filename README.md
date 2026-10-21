@@ -39,17 +39,19 @@ cosign verify ghcr.io/semrels/updater-cargo:latest \
 
 ```yaml
 plugins:
-  - name: updater-cargo
-    path: ~/.semrel/plugins/semrel-plugin-updater-cargo
-    env:
-      SEMREL_PLUGIN_FILE: "Cargo.toml"
+  - uses: "@semrel/updater-cargo"
+    phase: pre-tag
+    args:
+      file: "Cargo.toml"
 ```
 
-## `SEMREL_PLUGIN_*` variables
+## Options
 
-| Name | Required | Description | Default |
-| --- | --- | --- | --- |
-| `SEMREL_PLUGIN_FILE` | Optional | Path to the Cargo manifest to update. | Cargo.toml |
+Every option can be set as an entry under `args` in `.semrel.yaml`. semrel passes each entry to the plugin as the environment variable shown in the table, so you can also set that variable directly (for example in your CI environment) instead of using `args`.
+
+| Argument | Environment variable | Required | Description | Default |
+| --- | --- | --- | --- | --- |
+| `file` | `SEMREL_PLUGIN_FILE` | Optional | Path to the Cargo manifest to update. | Cargo.toml |
 
 ## `SEMREL_*` release context used
 
