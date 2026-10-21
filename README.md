@@ -1,6 +1,10 @@
 # updater-cargo
 
 [![Latest Release](https://img.shields.io/github/v/release/SemRels/updater-cargo?label=version&color=blue)](https://github.com/SemRels/updater-cargo/releases/latest)
+[![CI](https://github.com/SemRels/updater-cargo/actions/workflows/ci.yml/badge.svg)](https://github.com/SemRels/updater-cargo/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/SemRels/updater-cargo)](LICENSE)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SemRels/updater-cargo/badge)](https://scorecard.dev/viewer/?uri=github.com/SemRels/updater-cargo)
+[![REUSE status](https://api.reuse.software/badge/github.com/SemRels/updater-cargo)](https://api.reuse.software/info/github.com/SemRels/updater-cargo)
 
 Updates the Rust crate version in `Cargo.toml`.
 
